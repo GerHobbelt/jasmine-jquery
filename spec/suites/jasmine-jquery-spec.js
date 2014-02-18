@@ -221,12 +221,12 @@ describe("jasmine.Fixtures", function () {
 
     it("should insert HTML into container", function () {
       jasmine.getFixtures().set(html)
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     it("should insert jQuery element into container", function () {
       jasmine.getFixtures().set($(html))
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     describe("when fixture container does not exist", function () {
@@ -249,7 +249,7 @@ describe("jasmine.Fixtures", function () {
 
       it("should replace it with new content", function () {
         jasmine.getFixtures().set(html)
-        expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+        expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
       })
 
       it("should return the fixture container", function (){
@@ -265,7 +265,7 @@ describe("jasmine.Fixtures", function () {
 
     it("should be a shortcut global method", function () {
       setFixtures(html)
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     it("should return the fixture container", function () {
@@ -279,17 +279,17 @@ describe("jasmine.Fixtures", function () {
     var html = '<div>some HTML</div>'
     it("should insert HTML into container", function () {
       jasmine.getFixtures().appendSet(html)
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     it("should insert jQuery element into container", function () {
       jasmine.getFixtures().appendSet($(html))
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     it("should have shortcut global method setFixtures", function () {
       appendSetFixtures(html)
-      expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html))
+      expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html))
     })
 
     describe("when fixture container does not exist", function () {
@@ -306,7 +306,7 @@ describe("jasmine.Fixtures", function () {
 
       it("should add new content", function () {
         jasmine.getFixtures().appendSet(html)
-        expect(fixturesContainer().html()).toEqual(jasmine.JQuery.browserTagCaseIndependentHtml(html)+jasmine.JQuery.browserTagCaseIndependentHtml(html))
+        expect(fixturesContainer().html()).toEqual(jasmine.jQuery.browserTagCaseIndependentHtml(html)+jasmine.jQuery.browserTagCaseIndependentHtml(html))
       })
     })
   })
@@ -761,6 +761,32 @@ describe("jQuery matchers", function () {
       it("should pass negated if element has no matching key", function () {
         expect($('#sandbox')).not.toHaveData(wrongKey, value)
         expect($('#sandbox').get(0)).not.toHaveData(wrongKey, value)
+      })
+    })
+
+    describe("when the value is a JSON object", function() {
+      var objectKey = 'object-key'
+      var objectValue = {'foo': 'bar'}
+      var objectString = '[object Object]'
+
+      beforeEach(function() {
+        setFixtures(sandbox().data(objectKey, objectValue))
+      })
+
+      it("should pass if element has matching key with matching value", function () {
+        expect($('#sandbox')).toHaveData(objectKey, objectValue)
+        expect($('#sandbox').get(0)).toHaveData(objectKey, objectValue)
+      })
+
+      it("should not pass if element has matching key but the value is just a string representation of the value", function () {
+        expect($('#sandbox')).not.toHaveData(objectKey, objectString)
+        expect($('#sandbox').get(0)).not.toHaveData(objectKey, objectString)
+      })
+
+      it("should not pass if element has matching key but the value is just a string representation of the value", function () {
+        setFixtures('<div id="foo" div data-bar="[object Object]"></div>')
+        expect($('#foo')).not.toHaveData('bar', { 'answer': 42 })
+        expect($('#foo').get(0)).not.toHaveData('bar', { 'answer': 42 })
       })
     })
   })

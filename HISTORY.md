@@ -2,6 +2,13 @@
 
 This is an overview and may be incomplete. https://github.com/velesin/jasmine-jquery/commits/master is where to see everything.
 
+## v.1.60 (Dec 22, 2013)
+  - fix: usages of jQuery to use $ (#159)
+  - change namespace to be jasmine.jQuery
+
+## v1.5.93 (Nov 15, 2013)
+  - fix: check strict equality in `hasProperty`
+
 ## v1.5.92 (Oct 22, 2013)
   - fix: cloning radio buttons maintains their checked value
 
